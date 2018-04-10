@@ -66,6 +66,14 @@ def secure_page():
     """Render a secure page on our website that only logged in users can access."""
     return render_template('secure_page.html')
 
+@app.route('/logout')
+def logout():
+    
+    logout_user()
+    flash('Logged out successfully.')
+    next = request.args.get('next')
+    return redirect(url_for('home'))
+
 
 
 
