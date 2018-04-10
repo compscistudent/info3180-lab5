@@ -30,6 +30,9 @@ def about():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('secure_page'))
+    
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
         # change this to actually validate the entire form submission
@@ -54,9 +57,17 @@ def login():
     else:
         flash('Username or Password is incorrect.', 'danger')
 
-        
         #return redirect(url_for("home"))  # they should be redirected to a secure-page route instead
     return render_template("login.html", form=form)
+
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    """Render a secure page on our website that only logged in users can access."""
+    return render_template('secure_page.html')
+
+
+
 
 
 # user_loader callback. This callback is used to reload the user object from
